@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        input, button {
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>CGPA Calculator</h1>
+    <form>
+        <label for="grades">Grades:</label>
+        <input type="text" id="grades" placeholder="Enter grades separated by commas" required>
+        <br>
+        <label for="credits">Credits:</label>
+        <input type="text" id="credits" placeholder="Enter credits separated by commas" required>
+        <br>
+        <button type="button" onclick="calculateCGPA()">Calculate CGPA</button>
+    </form>
+    <h2 id="result"></h2>
+
+    <script>
+        function calculateCGPA() {
+            const gradesInput = document.getElementById('grades').value.trim();
+            const creditsInput = document.getElementById('credits').value.trim();
+
+            const gradesArray = gradesInput.split(',');
+            const creditsArray = creditsInput.split(',');
+
+            if (gradesArray.length !== creditsArray.length) {
+                alert('Please enter the same number of grades and credits.');
+                return;
+            }
+
+            const gradePoints = {
+                'S': 10.00,
+                'A+': 9.00,
+                'A': 8.00,
+                'B': 7.00,
+                'C': 6.00,
+                'D': 5.00,
+                'F': 2.00
+            };
+
+            let totalCreditPoints = 0;
+            let totalCredits = 0;
+
+            for (let i = 0; i < gradesArray.length; i++) {
+                const grade = gradesArray[i].toUpperCase();
+                const credit = parseFloat(creditsArray[i]);
+
+                if (isNaN(credit) || credit <= 0) {
+                    alert('Invalid credit value. Please enter a positive number for credits.');
+                    return;
+                }
+
+                if (!gradePoints.hasOwnProperty(grade)) {
+                    alert('Invalid grade entered.');
+                    return;
+                }
+
+                totalCreditPoints += gradePoints[grade] * credit;
+                totalCredits += credit;
+            }
+
+            const cgpa = totalCreditPoints / totalCredits;
+
+            document.getElementById('result').innerHTML = `CGPA: ${cgpa.toFixed(4)}`;
+        }
+    </script>
+</body>
+</html>
